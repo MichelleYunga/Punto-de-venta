@@ -13,27 +13,23 @@ import java.util.List;
 public class Item_Factura {
 
     private int id_itemfactura;
-    private int id_factura;
-    private int id_producto;
     private int cantidad;
     private double precio;
     private double subtotal;
 
-    private List<Producto> tipoproducto;
-    private List<Factura> tipofactura;
+    private List<Producto> producto;
+    private List<Factura> factura;
 
     public Item_Factura() {
     }
 
-    public Item_Factura(int id_itemfactura, int id_factura, int id_producto, int cantidad, double precio, double subtotal, List<Producto> tipoproducto, List<Factura> tipofactura) {
+    public Item_Factura(int id_itemfactura, int cantidad, double precio, double subtotal, List<Producto> producto, List<Factura> factura) {
         this.id_itemfactura = id_itemfactura;
-        this.id_factura = id_factura;
-        this.id_producto = id_producto;
         this.cantidad = cantidad;
         this.precio = precio;
         this.subtotal = subtotal;
-        this.tipoproducto = tipoproducto;
-        this.tipofactura = tipofactura;
+        this.producto = producto;
+        this.factura = factura;
     }
 
     public int getId_itemfactura() {
@@ -42,22 +38,6 @@ public class Item_Factura {
 
     public void setId_itemfactura(int id_itemfactura) {
         this.id_itemfactura = id_itemfactura;
-    }
-
-    public int getId_factura() {
-        return id_factura;
-    }
-
-    public void setId_factura(int id_factura) {
-        this.id_factura = id_factura;
-    }
-
-    public int getId_producto() {
-        return id_producto;
-    }
-
-    public void setId_producto(int id_producto) {
-        this.id_producto = id_producto;
     }
 
     public int getCantidad() {
@@ -84,19 +64,20 @@ public class Item_Factura {
         this.subtotal = subtotal;
     }
 
-    public List<Producto> getTipoproducto() {
-        return tipoproducto;
+    public List<Producto> getProducto() {
+        return producto;
     }
 
-    public void setTipoproducto(List<Producto> tipoproducto) {
-        this.tipoproducto = tipoproducto;
+    public void setProducto(List<Producto> producto) {
+        this.producto = producto;
     }
 
-    public List<Factura> getTipofactura() {
-        return tipofactura;
+    public List<Factura> getFactura() {
+        return factura;
     }
 
-    public void setTipofactura(List<Factura> tipofactura) {
-        this.tipofactura = tipofactura;
+    public void setFactura(List<Factura> factura) {
+        this.factura = factura;
     }
+
 }

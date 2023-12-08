@@ -4,16 +4,23 @@
  */
 package Modelo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author blink
  */
+
 public class Rol {
-    private int id_rol;
+   private int id_rol;
     private String rol;
     private boolean estado;
-
+    private ArrayList<UsuarioRol> listaURoles;
+    private ArrayList <Competencia> ListaCom;
+    
     public Rol() {
+        listaURoles = new ArrayList<>();
+        ListaCom= new ArrayList<>();
     }
 
     public Rol(int id_rol, String rol, boolean estado) {

@@ -15,26 +15,24 @@ public class Producto {
     private int stock;
     private double precio_unitario;
     private String unidad;
-    private int id_clasificacion;
-    private int id_proveedor;
     private boolean iva;
-    private List<Proveedores> tipoproveedor;
-    private  List<Clasificacion> tipoclasificacion;
+    private List<Proveedores> proveedor;
+    private  List<Clasificacion> clasificacion;
 
     public Producto() {
     }
 
-    public Producto(int id_producto, int stock, double precio_unitario, String unidad, int id_clasificacion, int id_proveedor, boolean iva, List<Proveedores> tipoproveedor, List<Clasificacion> tipoclasificacion) {
+
+    public Producto(int id_producto, int stock, double precio_unitario, String unidad, boolean iva, List<Proveedores> proveedor, List<Clasificacion> clasificacion) {
         this.id_producto = id_producto;
         this.stock = stock;
         this.precio_unitario = precio_unitario;
         this.unidad = unidad;
-        this.id_clasificacion = id_clasificacion;
-        this.id_proveedor = id_proveedor;
         this.iva = iva;
-        this.tipoproveedor = tipoproveedor;
-        this.tipoclasificacion = tipoclasificacion;
+        this.proveedor = proveedor;
+        this.clasificacion = clasificacion;
     }
+
 
     public int getId_producto() {
         return id_producto;
@@ -68,22 +66,6 @@ public class Producto {
         this.unidad = unidad;
     }
 
-    public int getId_clasificacion() {
-        return id_clasificacion;
-    }
-
-    public void setId_clasificacion(int id_clasificacion) {
-        this.id_clasificacion = id_clasificacion;
-    }
-
-    public int getId_proveedor() {
-        return id_proveedor;
-    }
-
-    public void setId_proveedor(int id_proveedor) {
-        this.id_proveedor = id_proveedor;
-    }
-
     public boolean isIva() {
         return iva;
     }
@@ -92,19 +74,21 @@ public class Producto {
         this.iva = iva;
     }
 
-    public List<Proveedores> getTipoproveedor() {
-        return tipoproveedor;
+    public List<Proveedores> getProveedor() {
+        return proveedor;
     }
 
-    public void setTipoproveedor(List<Proveedores> tipoproveedor) {
-        this.tipoproveedor = tipoproveedor;
+    public void setProveedor(List<Proveedores> proveedor) {
+        this.proveedor = proveedor;
     }
 
-    public List<Clasificacion> getTipoclasificacion() {
-        return tipoclasificacion;
+    public List<Clasificacion> getClasificacion() {
+        return clasificacion;
     }
 
-    public void setTipoclasificacion(List<Clasificacion> tipoclasificacion) {
-        this.tipoclasificacion = tipoclasificacion;
+    public void setClasificacion(List<Clasificacion> clasificacion) {
+        this.clasificacion = clasificacion;
     }
+
+    
 }
