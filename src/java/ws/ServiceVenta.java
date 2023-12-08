@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -80,7 +79,7 @@ public class ServiceVenta {
     public String crearFactura(
             @WebParam(name = "idFactura") int idFactura,
             @WebParam(name = "ruc") String ruc,
-            @WebParam(name = "fecha") Date fecha,
+            @WebParam(name = "fecha") String fecha,
             @WebParam(name = "descuento") double descuento,
             @WebParam(name = "total") double total,
             @WebParam(name = "idPersona") int idPersona,
@@ -107,7 +106,6 @@ public class ServiceVenta {
         if (tipPago == null) {
             return "Error: El Tipo pago con ID " + idTipoPago + " no existe.";
         }
-
         Factura nuevaFactura = new Factura(idFactura, ruc, fecha, descuento, total, idPersona, idTipoPago, null, null);
         persona.getFacturas().add(nuevaFactura);
         tipPago.getFacturas().add(nuevaFactura);
@@ -216,7 +214,7 @@ public class ServiceVenta {
 //        itemFactura.add(nuevoitemFa);
 //        return "ItemFactura creada exitosamente. ID de itemFactura: " + nuevoitemFa.getId_itemfactura();
 //    }
- @WebMethod(operationName = "crearItemFactura")
+    @WebMethod(operationName = "crearItemFactura")
     public String crearItemFactura(
             @WebParam(name = "iditemFactura") int idItemFactura,
             @WebParam(name = "cantidad") int cantidad,
@@ -224,10 +222,10 @@ public class ServiceVenta {
             @WebParam(name = "subtotal") double subTotal,
             @WebParam(name = "idProducto") int idProducto,
             @WebParam(name = "idFactura") int idFactura) {
-        
+
         Producto producto = null;
         for (Producto pr : productos) {
-            if (pr.getId_producto()== idProducto) {
+            if (pr.getId_producto() == idProducto) {
                 producto = pr;
                 break;
             }
@@ -238,7 +236,7 @@ public class ServiceVenta {
 
         Factura factura = null;
         for (Factura f : facturas) {
-            if (f.getId_factura()== idFactura) {
+            if (f.getId_factura() == idFactura) {
                 factura = f;
                 break;
             }
@@ -254,88 +252,42 @@ public class ServiceVenta {
         itemFactura.add(nuevaItemFactura);
         return "Item Factura creado exitosamente con ID: " + nuevaItemFactura.getId_itemfactura();
     }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    @WebMethod
-    public String listarClasificacion() {
-        if (clasificacions.isEmpty()) {
-            return "No hay clasificaciones registrados.";
-        }
-
-        StringBuilder listaclasificacion = new StringBuilder("Listado de clasificaciones:\n");
-
-        for (Clasificacion clasificacion : clasificacions) {
-            listaclasificacion.append("ID: ").append(clasificacion.getId_clasificacion())
-                    .append(", Tipo: ").append(clasificacion.getGrupo())
-                    .append("\n");
-        }
-
-        return listaclasificacion.toString();
+    @WebMethod(operationName = "listarClasificaion")
+    public List<Clasificacion> listarClasificacion() {
+        return clasificacions;
     }
 
-    @WebMethod
-    public String listarProveedor() {
-        if (proveedores.isEmpty()) {
-            return "No hay proveedores registrados.";
-        }
+    @WebMethod(operationName = "listarProveedor")
+    public List<Proveedores> listarProveedor() {
+        return proveedores;
+    }
 
-        StringBuilder listaproveedores = new StringBuilder("Listado de proveedores:\n");
+    @WebMethod(operationName = "listarProducto")
+    public List<Producto> listarProducto() {
+        return productos;
+    }
 
-        for (Proveedores prove : proveedores) {
-            listaproveedores.append("ID: ").append(prove.getId_proveedor())
-                    .append(", ruc: ").append(prove.getRuc())
-                    .append(", telefono: ").append(prove.getTelefono())
-                    .append(", pais: ").append(prove.getPais())
-                    .append(", correo: ").append(prove.getCorreo())
-                    .append(", moneda: ").append(prove.getMoneda())
-                    .append("\n");
-        }
+    @WebMethod(operationName = "listarFactura")
+    public List<Factura> listarFactura() {
+        return facturas;
+    }
 
-        return listaproveedores.toString();
+    @WebMethod(operationName = "listarPersona")
+    public List<Persona> listarPersona() {
+        return personas;
+    }
+
+    @WebMethod(operationName = "listarItemFactura")
+    public List<Item_Factura> listarItemFa() {
+        return itemFactura;
+    }
+
+    @WebMethod(operationName = "listarTipPago")
+    public List<Tipo_Pago> listarTipoPago() {
+        return tiposPagos;
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////
-    @WebMethod
-    public String listarTiposPago() {
-        if (tiposPagos.isEmpty()) {
-            return "No hay tipos de pago registrados.";
-        }
-
-        StringBuilder listaTiposPago = new StringBuilder("Listado de Tipos de Pago:\n");
-
-        for (Tipo_Pago tipoPago : tiposPagos) {
-            listaTiposPago.append("ID: ").append(tipoPago.getId_tipo_pago())
-                    .append(", Tipo: ").append(tipoPago.getTipo())
-                    .append(", Descripción: ").append(tipoPago.getDesripcion())
-                    .append("\n");
-        }
-
-        return listaTiposPago.toString();
-    }
-
-    @WebMethod
-    public String listarFacturas() {
-        if (facturas.isEmpty()) {
-            return "No hay facturas registradas.";
-        }
-
-        StringBuilder listaFacturas = new StringBuilder("Listado de Facturas:\n");
-
-        for (Factura factura : facturas) {
-            listaFacturas.append("ID Factura: ").append(factura.getId_factura())
-                    .append(", RUC: ").append(factura.getRuc())
-                    .append(", Fecha: ").append(factura.getFecha())
-                    .append(", Descuento: ").append(factura.getDescuento())
-                    .append(", Total: ").append(factura.getTotal())
-                    .append("\nTipos de Pago:\n");
-            for (Tipo_Pago tipoPago : factura.getTiposPago()) {
-                listaFacturas.append("\tID Tipo Pago: ").append(tipoPago.getId_tipo_pago())
-                        .append(", Tipo: ").append(tipoPago.getTipo())
-                        .append(", Descripción: ").append(tipoPago.getDesripcion())
-                        .append("\n");
-            }
-            listaFacturas.append("\n");
-        }
-        return listaFacturas.toString();
-    }
-
 }

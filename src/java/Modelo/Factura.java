@@ -16,7 +16,7 @@ public class Factura {
 
     private int id_factura;
     private String ruc;
-    private Date fecha;
+    private String fecha;
     private double descuento;
     private double total;
     private int id_persona;
@@ -31,7 +31,20 @@ public class Factura {
          this.itemFactura = new ArrayList<>();
     }
 
-    public Factura(int id_factura, String ruc, Date fecha, double descuento, double total, int id_persona, int id_tipo_pago, List<Tipo_Pago> tiposPago, List<Persona> persona) {
+//    public Factura(int id_factura, String ruc, String fecha, double descuento, double total, int id_persona, int id_tipo_pago, List<Tipo_Pago> tiposPago, List<Persona> persona, List<Item_Factura> itemFactura) {
+//        this.id_factura = id_factura;
+//        this.ruc = ruc;
+//        this.fecha = fecha;
+//        this.descuento = descuento;
+//        this.total = total;
+//        this.id_persona = id_persona;
+//        this.id_tipo_pago = id_tipo_pago;
+//        this.tiposPago = tiposPago;
+//        this.persona = persona;
+//        this.itemFactura = itemFactura;
+//    }
+
+    public Factura(int id_factura, String ruc, String fecha, double descuento, double total, int id_persona, int id_tipo_pago, List<Tipo_Pago> tiposPago, List<Persona> persona) {
         this.id_factura = id_factura;
         this.ruc = ruc;
         this.fecha = fecha;
@@ -41,10 +54,8 @@ public class Factura {
         this.id_tipo_pago = id_tipo_pago;
         this.tiposPago = tiposPago;
         this.persona = persona;
-         this.itemFactura = new ArrayList<>();
+        this.itemFactura = itemFactura;
     }
-
-   
 
     public int getId_factura() {
         return id_factura;
@@ -62,11 +73,11 @@ public class Factura {
         this.ruc = ruc;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
@@ -86,22 +97,6 @@ public class Factura {
         this.total = total;
     }
 
-    public List<Tipo_Pago> getTiposPago() {
-        return tiposPago;
-    }
-
-    public void setTiposPago(List<Tipo_Pago> tiposPago) {
-        this.tiposPago = tiposPago;
-    }
-
-    public List<Persona> getPersona() {
-        return persona;
-    }
-
-    public void setPersona(List<Persona> persona) {
-        this.persona = persona;
-    }
-
     public int getId_persona() {
         return id_persona;
     }
@@ -118,6 +113,22 @@ public class Factura {
         this.id_tipo_pago = id_tipo_pago;
     }
 
+    public List<Tipo_Pago> getTiposPago() {
+        return tiposPago;
+    }
+
+    public void setTiposPago(List<Tipo_Pago> tiposPago) {
+        this.tiposPago = tiposPago;
+    }
+
+    public List<Persona> getPersona() {
+        return persona;
+    }
+
+    public void setPersona(List<Persona> persona) {
+        this.persona = persona;
+    }
+
     public List<Item_Factura> getItemFactura() {
         return itemFactura;
     }
@@ -125,5 +136,9 @@ public class Factura {
     public void setItemFactura(List<Item_Factura> itemFactura) {
         this.itemFactura = itemFactura;
     }
+
+
+
+   
 
 }
