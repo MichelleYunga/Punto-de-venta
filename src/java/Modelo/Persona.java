@@ -4,6 +4,9 @@
  */
 package Modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author blink
@@ -16,7 +19,10 @@ public class Persona {
     private String celular;
     private String correo;
 
+    private List<Factura> facturas;
+    
     public Persona() {
+        this.facturas = new ArrayList<>();
     }
 
     public Persona(int id_persona, String nombre, String apellido, String dni, String celular, String correo) {
@@ -26,6 +32,7 @@ public class Persona {
         this.dni = dni;
         this.celular = celular;
         this.correo = correo;
+        this.facturas = new ArrayList<>();
     }
 
     public int getId_persona() {
@@ -75,4 +82,13 @@ public class Persona {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
+    public List<Factura> getFacturas() {
+        return facturas;
+    }
+
+    public void setFacturas(List<Factura> facturas) {
+        this.facturas = facturas;
+    }
+    
 }

@@ -30,9 +30,10 @@ public class ServiceVenta {
     private List<Persona> personas = new ArrayList<>();
     private List<Clasificacion> clasificacions = new ArrayList<>();
     private List<Proveedores> proveedores = new ArrayList<>();
-   private List<Producto> productos = new ArrayList<>();
- private List<Item_Factura> itemFactura = new ArrayList<>();
- 
+    private List<Producto> productos = new ArrayList<>();
+    private List<Item_Factura> itemFactura = new ArrayList<>();
+
+    ///////////////////////////////////////TIPOPAGO
     @WebMethod
     public String crearTipoPago(
             @WebParam(name = "idTipoPago") int idTipoPago,
@@ -51,22 +52,6 @@ public class ServiceVenta {
         return encontrarTipoPagoPorId(idTipoPago);
     }
 
-    @WebMethod
-    public String crearFactura(
-            @WebParam(name = "idFactura") int idFactura,
-            @WebParam(name = "ruc") String ruc,
-            @WebParam(name = "fecha") Date fecha,
-            @WebParam(name = "descuento") double descuento,
-            @WebParam(name = "total") double total,
-            @WebParam(name = "tiposPago") List<Tipo_Pago> tiposPago, 
-            @WebParam(name = "persona")List<Persona> personas){
-
-        Factura nuevaFactura = new Factura(idFactura, ruc, fecha, descuento, total, tiposPago, personas);
-
-        facturas.add(nuevaFactura);
-        return "Factura creada exitosamente. ID de Factura: " + nuevaFactura.getId_factura();
-    }
-    
     private Tipo_Pago encontrarTipoPagoPorId(int idTipoPago) {
 
         return tiposPagos.stream()
@@ -75,6 +60,240 @@ public class ServiceVenta {
                 .orElse(null);
     }
 
+    /////////////////////////////////FACTURA////////////////////////7
+//    @WebMethod
+//    public String crearFactura(
+//            @WebParam(name = "idFactura") int idFactura,
+//            @WebParam(name = "ruc") String ruc,
+//            @WebParam(name = "fecha") Date fecha,
+//            @WebParam(name = "descuento") double descuento,
+//            @WebParam(name = "total") double total,
+//            @WebParam(name = "tiposPago") int idtipopago,
+//            @WebParam(name = "persona")int idpersona) {
+//
+//        Factura nuevaFactura = new Factura(idFactura, ruc, fecha, descuento, total, idtipopago, idpersona,null,null);
+//
+//        facturas.add(nuevaFactura);
+//        return "Factura creada exitosamente. ID de Factura: " + nuevaFactura.getId_factura();
+//    }
+    @WebMethod(operationName = "crearFactura")
+    public String crearFactura(
+            @WebParam(name = "idFactura") int idFactura,
+            @WebParam(name = "ruc") String ruc,
+            @WebParam(name = "fecha") Date fecha,
+            @WebParam(name = "descuento") double descuento,
+            @WebParam(name = "total") double total,
+            @WebParam(name = "idPersona") int idPersona,
+            @WebParam(name = "idTipoPago") int idTipoPago) {
+
+        Persona persona = null;
+        for (Persona p : personas) {
+            if (p.getId_persona() == idPersona) {
+                persona = p;
+                break;
+            }
+        }
+        if (persona == null) {
+            return "Error: La persona con ID " + idPersona + " no existe.";
+        }
+
+        Tipo_Pago tipPago = null;
+        for (Tipo_Pago tp : tiposPagos) {
+            if (tp.getId_tipo_pago() == idTipoPago) {
+                tipPago = tp;
+                break;
+            }
+        }
+        if (tipPago == null) {
+            return "Error: El Tipo pago con ID " + idTipoPago + " no existe.";
+        }
+
+        Factura nuevaFactura = new Factura(idFactura, ruc, fecha, descuento, total, idPersona, idTipoPago, null, null);
+        persona.getFacturas().add(nuevaFactura);
+        tipPago.getFacturas().add(nuevaFactura);
+
+        facturas.add(nuevaFactura);
+        return "Factura creado exitosamente con ID: " + nuevaFactura.getId_factura();
+    }
+
+    /////////////////////PERSONA//////////////////////////////////////////////////////////////
+    @WebMethod
+    public String crearPersona(
+            @WebParam(name = "idPersona") int idPersona,
+            @WebParam(name = "nombre") String nombre,
+            @WebParam(name = "apellido") String apellido,
+            @WebParam(name = "dni") String dni,
+            @WebParam(name = "celular") String celular,
+            @WebParam(name = "correo") String correo) {
+        Persona nuevaPersona = new Persona(idPersona, nombre, apellido, dni, celular, correo);
+
+        personas.add(nuevaPersona);
+
+        return "Persona creada exitosamente con ID: " + nuevaPersona.getId_persona();
+    }
+
+    ///////////////CLASIFICACION////////////////////////////////////////////////////////////////////////////
+    @WebMethod
+    public String crearClasificacion(
+            @WebParam(name = "idClasificacion") int idClasificacion,
+            @WebParam(name = "grupo") String grupo) {
+        Clasificacion nuevaClasificacion = new Clasificacion(idClasificacion, grupo);
+
+        clasificacions.add(nuevaClasificacion);
+
+        return "Clasificación creada exitosamente con ID: " + nuevaClasificacion.getId_clasificacion();
+    }
+
+    ///////////////PROVEEDOR//////////////////////////
+    @WebMethod
+    public String crearProveedor(
+            @WebParam(name = "idProveedor") int idProveedor,
+            @WebParam(name = "ruc") String ruc,
+            @WebParam(name = "telefono") String telefono,
+            @WebParam(name = "pais") String pais,
+            @WebParam(name = "correo") String correo,
+            @WebParam(name = "moneda") String moneda) {
+        Proveedores nuevoProveedor = new Proveedores(idProveedor, ruc, telefono, pais, correo, moneda);
+
+        proveedores.add(nuevoProveedor);
+
+        return "Proveedor creado exitosamente con ID: " + nuevoProveedor.getId_proveedor();
+    }
+
+    /////////////////PRODUCTO///////////////////////////////////////////////////////////////////////////////
+    @WebMethod(operationName = "crearProducto")
+    public String crearProducto(
+            @WebParam(name = "idProducto") int idProducto,
+            @WebParam(name = "stock") int stock,
+            @WebParam(name = "precioUnitario") double precioUnitario,
+            @WebParam(name = "unidad") String unidad,
+            @WebParam(name = "idClasificacion") int idClasificacion,
+            @WebParam(name = "idProveedor") int idProveedor,
+            @WebParam(name = "iva") boolean iva) {
+
+        Clasificacion clasificacion = null;
+        for (Clasificacion c : clasificacions) {
+            if (c.getId_clasificacion() == idClasificacion) {
+                clasificacion = c;
+                break;
+            }
+        }
+        if (clasificacion == null) {
+            return "Error: La clasificación con ID " + idClasificacion + " no existe.";
+        }
+
+        Proveedores proveedor = null;
+        for (Proveedores p : proveedores) {
+            if (p.getId_proveedor() == idProveedor) {
+                proveedor = p;
+                break;
+            }
+        }
+        if (proveedor == null) {
+            return "Error: El proveedor con ID " + idProveedor + " no existe.";
+        }
+
+        Producto nuevoProducto = new Producto(idProducto, stock, precioUnitario, unidad, iva, idClasificacion, idProveedor, null, null);
+        proveedor.getProductos().add(nuevoProducto);
+        clasificacion.getProductos().add(nuevoProducto);
+
+        productos.add(nuevoProducto);
+        return "Producto creado exitosamente con ID: " + nuevoProducto.getId_producto();
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//    @WebMethod
+//    public String crearItemFactura(
+//            @WebParam(name = "idItemFactura") int idItemFactura,
+//            @WebParam(name = "cantidad") int cantidad,
+//            @WebParam(name = "precio") double precio,
+//            @WebParam(name = "subtotal") double subtotal,
+//            @WebParam(name = "factura") int idfacura,
+//            @WebParam(name = "producto") int idproducto) {
+//
+//        Item_Factura nuevoitemFa = new Item_Factura(idItemFactura, cantidad, precio, subtotal, idfacura, idproducto, null, null);
+//
+//        itemFactura.add(nuevoitemFa);
+//        return "ItemFactura creada exitosamente. ID de itemFactura: " + nuevoitemFa.getId_itemfactura();
+//    }
+ @WebMethod(operationName = "crearItemFactura")
+    public String crearItemFactura(
+            @WebParam(name = "iditemFactura") int idItemFactura,
+            @WebParam(name = "cantidad") int cantidad,
+            @WebParam(name = "precio") double prrecio,
+            @WebParam(name = "subtotal") double subTotal,
+            @WebParam(name = "idProducto") int idProducto,
+            @WebParam(name = "idFactura") int idFactura) {
+        
+        Producto producto = null;
+        for (Producto pr : productos) {
+            if (pr.getId_producto()== idProducto) {
+                producto = pr;
+                break;
+            }
+        }
+        if (producto == null) {
+            return "Error: El producto con ID " + idProducto + " no existe.";
+        }
+
+        Factura factura = null;
+        for (Factura f : facturas) {
+            if (f.getId_factura()== idFactura) {
+                factura = f;
+                break;
+            }
+        }
+        if (factura == null) {
+            return "Error: La factura con ID " + idFactura + " no existe.";
+        }
+
+        Item_Factura nuevaItemFactura = new Item_Factura(idItemFactura, cantidad, prrecio, subTotal, idProducto, idFactura, null, null);
+        producto.getItemFactura().add(nuevaItemFactura);
+        factura.getItemFactura().add(nuevaItemFactura);
+
+        itemFactura.add(nuevaItemFactura);
+        return "Item Factura creado exitosamente con ID: " + nuevaItemFactura.getId_itemfactura();
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @WebMethod
+    public String listarClasificacion() {
+        if (clasificacions.isEmpty()) {
+            return "No hay clasificaciones registrados.";
+        }
+
+        StringBuilder listaclasificacion = new StringBuilder("Listado de clasificaciones:\n");
+
+        for (Clasificacion clasificacion : clasificacions) {
+            listaclasificacion.append("ID: ").append(clasificacion.getId_clasificacion())
+                    .append(", Tipo: ").append(clasificacion.getGrupo())
+                    .append("\n");
+        }
+
+        return listaclasificacion.toString();
+    }
+
+    @WebMethod
+    public String listarProveedor() {
+        if (proveedores.isEmpty()) {
+            return "No hay proveedores registrados.";
+        }
+
+        StringBuilder listaproveedores = new StringBuilder("Listado de proveedores:\n");
+
+        for (Proveedores prove : proveedores) {
+            listaproveedores.append("ID: ").append(prove.getId_proveedor())
+                    .append(", ruc: ").append(prove.getRuc())
+                    .append(", telefono: ").append(prove.getTelefono())
+                    .append(", pais: ").append(prove.getPais())
+                    .append(", correo: ").append(prove.getCorreo())
+                    .append(", moneda: ").append(prove.getMoneda())
+                    .append("\n");
+        }
+
+        return listaproveedores.toString();
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
     @WebMethod
     public String listarTiposPago() {
         if (tiposPagos.isEmpty()) {
@@ -118,162 +337,5 @@ public class ServiceVenta {
         }
         return listaFacturas.toString();
     }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    @WebMethod
-    public String crearPersona(
-            @WebParam(name = "idPersona") int idPersona,
-            @WebParam(name = "nombre") String nombre,
-            @WebParam(name = "apellido") String apellido,
-            @WebParam(name = "dni") String dni,
-            @WebParam(name = "celular") String celular,
-            @WebParam(name = "correo") String correo) {
-        Persona nuevaPersona = new Persona(idPersona, nombre, apellido, dni, celular, correo);
 
-        personas.add(nuevaPersona);
-
-        return "Persona creada exitosamente con ID: " + nuevaPersona.getId_persona();
-    }
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    @WebMethod
-    public String crearClasificacion(
-            @WebParam(name = "idClasificacion") int idClasificacion,
-            @WebParam(name = "grupo") String grupo) {
-        Clasificacion nuevaClasificacion = new Clasificacion(idClasificacion, grupo);
-
-        clasificacions.add(nuevaClasificacion);
-
-        return "Clasificación creada exitosamente con ID: " + nuevaClasificacion.getId_clasificacion();
-    }
-    /////////////////////////////////////////////////////////////////
-    @WebMethod
-    public String crearProveedor(
-            @WebParam(name = "idProveedor") int idProveedor,
-            @WebParam(name = "ruc") String ruc,
-            @WebParam(name = "telefono") String telefono,
-            @WebParam(name = "pais") String pais,
-            @WebParam(name = "correo") String correo,
-            @WebParam(name = "moneda") String moneda) {
-        Proveedores nuevoProveedor = new Proveedores(idProveedor, ruc, telefono, pais, correo, moneda);
-
-        proveedores.add(nuevoProveedor);
-
-        return "Proveedor creado exitosamente con ID: " + nuevoProveedor.getId_proveedor();
-    }
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      @WebMethod
-    public String crearProducto(
-            @WebParam(name = "idproducto") int idProducto,
-            @WebParam(name = "stock") int stock,
-            @WebParam(name = "precioUnitario") double precio_unitario,
-            @WebParam(name = "unidad") String unidad,
-            @WebParam(name = "iva") boolean iva,
-            @WebParam(name = "clasificacion") List<Clasificacion> clasificaciones, 
-            @WebParam(name = "proveedor")List<Proveedores> proveedores){
-
-        Producto nuevoProducto = new Producto(idProducto, stock, precio_unitario, unidad,iva,proveedores,clasificaciones);
-
-        productos.add(nuevoProducto);
-        return "Producto creada exitosamente. ID de producto: " + nuevoProducto.getId_producto();
-    }
-    //REVICION
-    //**********
-//    @WebMethod(operationName = "crearProducto")
-//    public String crearProducto(
-//            @WebParam(name = "idProducto") int idProducto,
-//            @WebParam(name = "stock") int stock,
-//            @WebParam(name = "precioUnitario") double precioUnitario,
-//            @WebParam(name = "unidad") String unidad,
-//            @WebParam(name = "idClasificacion") int idClasificacion,
-//            @WebParam(name = "idProveedor") int idProveedor,
-//            @WebParam(name = "iva") boolean iva) {
-//
-//        // Verificar si la clasificación existe
-//        Clasificacion clasificacion = null;
-//        for (Clasificacion c : listaclasificacion) {
-//            if (c.getId_clasificacion() == idClasificacion) {
-//                clasificacion = c;
-//                break;
-//            }
-//        }
-//
-//        if (clasificacion == null) {
-//            return "Error: La clasificación con ID " + idClasificacion + " no existe.";
-//        }
-//
-//        // Verificar si el proveedor existe
-//        Proveedores proveedor = null;
-//        for (Proveedores p : listaproveedor) {
-//            if (p.getId_proveedor() == idProveedor) {
-//                proveedor = p;
-//                break;
-//            }
-//        }
-//
-//        if (proveedor == null) {
-//            return "Error: El proveedor con ID " + idProveedor + " no existe.";
-//        }
-//
-//        // Crear producto
-//        Producto nuevoProducto = new Producto(idProducto, stock, precioUnitario, unidad, idClasificacion, idProveedor, iva, null, null);
-//        proveedor.getProductos().add(nuevoProducto);
-//        clasificacion.getProductos().add(nuevoProducto);
-//
-//        listaproducto.add(nuevoProducto);
-//        return "Producto creado exitosamente con ID: " + nuevoProducto.getId_producto();
-    //}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-     @WebMethod
-    public String crearItemFactura(
-            @WebParam(name = "idItemFactura") int idItemFactura,
-            @WebParam(name = "factura") List<Factura> factura,
-            @WebParam(name = "producto") List<Producto> producto,
-            @WebParam(name = "cantidad") int cantidad,
-            @WebParam(name = "precio") double precio,
-            @WebParam(name = "subtotal") double subtotal){
-
-        Item_Factura nuevoitemFa = new Item_Factura(idItemFactura, cantidad,precio,subtotal, producto,factura);
-
-        itemFactura.add(nuevoitemFa);
-        return "ItemFactura creada exitosamente. ID de itemFactura: " + nuevoitemFa.getId_itemfactura();
-    }
-    
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   //proceso
-    @WebMethod
-    public String listarClasificacion() {
-        if (clasificacions.isEmpty()) {
-            return "No hay clasificaciones registrados.";
-        }
-
-        StringBuilder listaTiposPago = new StringBuilder("Listado de Tipos de Pago:\n");
-
-        for (Tipo_Pago tipoPago : tiposPagos) {
-            listaTiposPago.append("ID: ").append(tipoPago.getId_tipo_pago())
-                    .append(", Tipo: ").append(tipoPago.getTipo())
-                    .append(", Descripción: ").append(tipoPago.getDesripcion())
-                    .append("\n");
-        }
-
-        return listaTiposPago.toString();
-    }
-    
-       @WebMethod
-    public String listarProveedor() {
-        if (tiposPagos.isEmpty()) {
-            return "No hay tipos de pago registrados.";
-        }
-
-        StringBuilder listaTiposPago = new StringBuilder("Listado de Tipos de Pago:\n");
-
-        for (Tipo_Pago tipoPago : tiposPagos) {
-            listaTiposPago.append("ID: ").append(tipoPago.getId_tipo_pago())
-                    .append(", Tipo: ").append(tipoPago.getTipo())
-                    .append(", Descripción: ").append(tipoPago.getDesripcion())
-                    .append("\n");
-        }
-
-        return listaTiposPago.toString();
-    }
 }

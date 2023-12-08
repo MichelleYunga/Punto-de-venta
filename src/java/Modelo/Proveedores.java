@@ -4,11 +4,15 @@
  */
 package Modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author blink
  */
 public class Proveedores {
+
     private int id_proveedor;
     private String ruc;
     private String telefono;
@@ -16,7 +20,10 @@ public class Proveedores {
     private String correo;
     private String moneda;
 
+    private List<Producto> productos;
+
     public Proveedores() {
+        this.productos = new ArrayList<>();
     }
 
     public Proveedores(int id_proveedor, String ruc, String telefono, String pais, String correo, String moneda) {
@@ -26,6 +33,7 @@ public class Proveedores {
         this.pais = pais;
         this.correo = correo;
         this.moneda = moneda;
+        this.productos = new ArrayList<>();
     }
 
     public int getId_proveedor() {
@@ -75,4 +83,13 @@ public class Proveedores {
     public void setMoneda(String moneda) {
         this.moneda = moneda;
     }
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
+    
 }

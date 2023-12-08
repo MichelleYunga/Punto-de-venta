@@ -4,6 +4,9 @@
  */
 package Modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author blink
@@ -14,13 +17,17 @@ public class Tipo_Pago {
     private String tipo;
     private String desripcion;
 
+    private List<Factura> facturas;
+    
     public Tipo_Pago() {
+        this.facturas = new ArrayList<>();
     }
 
     public Tipo_Pago(int id_tipo_pago, String tipo, String desripcion) {
         this.id_tipo_pago = id_tipo_pago;
         this.tipo = tipo;
         this.desripcion = desripcion;
+        this.facturas = new ArrayList<>();
     }
 
     public int getId_tipo_pago() {
@@ -45,6 +52,14 @@ public class Tipo_Pago {
 
     public void setDesripcion(String desripcion) {
         this.desripcion = desripcion;
+    }
+
+    public List<Factura> getFacturas() {
+        return facturas;
+    }
+
+    public void setFacturas(List<Factura> facturas) {
+        this.facturas = facturas;
     }
 
 }

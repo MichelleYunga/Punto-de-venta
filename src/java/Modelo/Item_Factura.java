@@ -16,6 +16,8 @@ public class Item_Factura {
     private int cantidad;
     private double precio;
     private double subtotal;
+    private int id_producto;
+    private int id_factura;
 
     private List<Producto> producto;
     private List<Factura> factura;
@@ -23,15 +25,18 @@ public class Item_Factura {
     public Item_Factura() {
     }
 
-    public Item_Factura(int id_itemfactura, int cantidad, double precio, double subtotal, List<Producto> producto, List<Factura> factura) {
+    public Item_Factura(int id_itemfactura, int cantidad, double precio, double subtotal, int id_producto, int id_factura, List<Producto> producto, List<Factura> factura) {
         this.id_itemfactura = id_itemfactura;
         this.cantidad = cantidad;
         this.precio = precio;
         this.subtotal = subtotal;
+        this.id_producto = id_producto;
+        this.id_factura = id_factura;
         this.producto = producto;
         this.factura = factura;
     }
 
+    
     public int getId_itemfactura() {
         return id_itemfactura;
     }
@@ -78,6 +83,22 @@ public class Item_Factura {
 
     public void setFactura(List<Factura> factura) {
         this.factura = factura;
+    }
+
+    public int getId_producto() {
+        return id_producto;
+    }
+
+    public void setId_producto(int id_producto) {
+        this.id_producto = id_producto;
+    }
+
+    public int getId_factura() {
+        return id_factura;
+    }
+
+    public void setId_factura(int id_factura) {
+        this.id_factura = id_factura;
     }
 
 }

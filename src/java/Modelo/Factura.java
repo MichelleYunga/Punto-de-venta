@@ -4,6 +4,7 @@
  */
 package Modelo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,21 +19,32 @@ public class Factura {
     private Date fecha;
     private double descuento;
     private double total;
+    private int id_persona;
+    private int id_tipo_pago;
+    
     private List<Tipo_Pago> tiposPago;
     private List<Persona> persona;
 
+      private List<Item_Factura> itemFactura;
+      
     public Factura() {
+         this.itemFactura = new ArrayList<>();
     }
 
-    public Factura(int id_factura, String ruc, Date fecha, double descuento, double total, List<Tipo_Pago> tiposPago, List<Persona> persona) {
+    public Factura(int id_factura, String ruc, Date fecha, double descuento, double total, int id_persona, int id_tipo_pago, List<Tipo_Pago> tiposPago, List<Persona> persona) {
         this.id_factura = id_factura;
         this.ruc = ruc;
         this.fecha = fecha;
         this.descuento = descuento;
         this.total = total;
+        this.id_persona = id_persona;
+        this.id_tipo_pago = id_tipo_pago;
         this.tiposPago = tiposPago;
-         this.persona = persona;
+        this.persona = persona;
+         this.itemFactura = new ArrayList<>();
     }
+
+   
 
     public int getId_factura() {
         return id_factura;
@@ -88,6 +100,30 @@ public class Factura {
 
     public void setPersona(List<Persona> persona) {
         this.persona = persona;
+    }
+
+    public int getId_persona() {
+        return id_persona;
+    }
+
+    public void setId_persona(int id_persona) {
+        this.id_persona = id_persona;
+    }
+
+    public int getId_tipo_pago() {
+        return id_tipo_pago;
+    }
+
+    public void setId_tipo_pago(int id_tipo_pago) {
+        this.id_tipo_pago = id_tipo_pago;
+    }
+
+    public List<Item_Factura> getItemFactura() {
+        return itemFactura;
+    }
+
+    public void setItemFactura(List<Item_Factura> itemFactura) {
+        this.itemFactura = itemFactura;
     }
 
 }
